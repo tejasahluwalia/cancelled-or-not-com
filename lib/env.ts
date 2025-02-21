@@ -1,14 +1,12 @@
 import { z } from "zod";
 
 const serverSchema = z.object({
-  DATABASE_URL: z.string().url(),
-  // Add other server-side only variables here
+	D1_DB_ID: z.string().url(),
+	CF_ACCOUNT_ID: z.string().url(),
+	CF_API_TOKEN: z.string().url(),
 });
 
-const clientSchema = z.object({
-  NEXT_PUBLIC_SOME_KEY: z.string().optional(),
-  // Add client-exposed variables here (must have NEXT_PUBLIC_ prefix)
-});
+const clientSchema = z.object({});
 
 const combinedSchema = z.intersection(serverSchema, clientSchema);
 const parsedEnv = combinedSchema.safeParse(process.env);
