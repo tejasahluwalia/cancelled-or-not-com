@@ -13,21 +13,20 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-interface Celebrity {
-	id: string;
-	name: string;
-	occupation: string;
-	image_url: string;
-	controversy: string;
-	sources: string; // JSON array of sources
-	last_checked: string;
+interface WikiSearchResult {
+	id: number;
+	key: string;
+	title: string;
+	excerpt: string;
+	description: string;
+	thumbnail?: {
+		url: string;
+	};
 }
 
 export default function CelebrityDirectory() {
 	const [searchQuery, setSearchQuery] = useState("");
-	const [filteredCelebrities, setFilteredCelebrities] = useState<Celebrity[]>(
-		[]
-	);
+	const [searchResults, setSearchResults] = useState<WikiSearchResult[]>([]);
 	return (
 		<div className="container mx-auto p-6 max-w-4xl">
 			<div className="mb-8">
@@ -44,22 +43,22 @@ export default function CelebrityDirectory() {
 			</div>
 
 			<div className="grid gap-6">
-				{filteredCelebrities.map((celebrity) => (
-					<Card key={celebrity.id}>
-						<Link href={`/${celebrity.id}`}>
+				{searchResults.map((result) => (
+					<Card key={result.key}>
+						<Link href={`/${result.key}`}>
 							<CardHeader>
 								<div className="flex items-start gap-4">
 									<div className="relative h-24 w-24 rounded-lg overflow-hidden shrink-0">
 										<Image
-											src={celebrity.image_url || "/placeholder.svg"}
-											alt={celebrity.name}
+											src={result.thumbnail?.url || "/placeholder.svg"}
+											alt={result.title}
 											fill
 											className="object-cover"
 										/>
 									</div>
 									<div>
-										<CardTitle>{celebrity.name}</CardTitle>
-										<CardDescription>{celebrity.occupation}</CardDescription>
+										<CardTitle>{result.title}</CardTitle>
+										<CardDescription>{result.description}</CardDescription>
 									</div>
 								</div>
 							</CardHeader>
