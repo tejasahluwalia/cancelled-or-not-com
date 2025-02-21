@@ -15,7 +15,7 @@ import { type WikiTitleSearchResult } from "@/app/api/search/route";
 import debounce from "lodash/debounce";
 import { useEffect } from "react";
 
-export default function CelebrityDirectory() {
+export default function Page() {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [searchResults, setSearchResults] = useState<WikiTitleSearchResult[]>(
 		[]
@@ -55,7 +55,7 @@ export default function CelebrityDirectory() {
 				<div className="relative">
 					<SearchIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
 					<Input
-						placeholder="Search celebrities..."
+						placeholder="Search entities..."
 						className="pl-8"
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}

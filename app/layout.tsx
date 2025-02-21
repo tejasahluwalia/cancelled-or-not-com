@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Cancelled or Not",
-  description: "Check if a celebrity is cancelled or not.",
+	title: "Cancelled or Not",
+	description: "Check if an entity is cancelled or not.",
 };
 
 export default function RootLayout({
