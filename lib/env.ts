@@ -1,9 +1,10 @@
 import { z } from "zod";
 
 const serverSchema = z.object({
-	D1_DB_ID: z.string().url(),
-	CF_ACCOUNT_ID: z.string().url(),
-	CF_API_TOKEN: z.string().url(),
+	D1_DB_ID: z.string(),
+	CF_ACCOUNT_ID: z.string(),
+	CF_API_TOKEN: z.string(),
+	PERPLEXITY_API_KEY: z.string(),
 });
 
 const clientSchema = z.object({});

@@ -10,23 +10,44 @@ import { Input } from "@/components/ui/input";
 import { Search as SearchIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
-
-interface WikiSearchResult {
-	id: number;
-	key: string;
-	title: string;
-	excerpt: string;
-	description: string;
-	thumbnail?: {
-		url: string;
-	};
-}
+import { type WikiTitleSearchResult } from "@/app/api/search/route";
+import debounce from "lodash/debounce";
+import { useEffect } from "react";
 
 export default function CelebrityDirectory() {
 	const [searchQuery, setSearchQuery] = useState("");
-	const [searchResults, setSearchResults] = useState<WikiSearchResult[]>([]);
+	const [searchResults, setSearchResults] = useState<WikiTitleSearchResult[]>(
+		[]
+	);
+
+	const debouncedSearch = debounce(async (query: string) => {
+		if (query.trim() === "") {
+			setSearchResults([]);
+			return;
+		}
+
+		try {
+			const response = await fetch(
+				`/api/search?q=${encodeURIComponent(query)}`
+			);
+			if (!response.ok) throw new Error("Search failed");
+			const data = await response.json();
+			setSearchResults(data);
+		} catch (error) {
+			console.error("Search error:", error);
+			setSearchResults([]);
+		}
+	}, 300);
+
+	useEffect(() => {
+		debouncedSearch(searchQuery);
+
+		return () => {
+			debouncedSearch.cancel();
+		};
+	}, [searchQuery, debouncedSearch]);
+
 	return (
 		<div className="container mx-auto p-6 max-w-4xl">
 			<div className="mb-8">
@@ -50,7 +71,13 @@ export default function CelebrityDirectory() {
 								<div className="flex items-start gap-4">
 									<div className="relative h-24 w-24 rounded-lg overflow-hidden shrink-0">
 										<Image
-											src={result.thumbnail?.url || "/placeholder.svg"}
+											src={
+												"https:" +
+													result.thumbnail?.url.replace(
+														/\/\d+px-/,
+														"/500px-"
+													) || "/placeholder.svg"
+											}
 											alt={result.title}
 											fill
 											className="object-cover"
