@@ -51,7 +51,7 @@ export default function CelebrityDirectory() {
 	return (
 		<div className="container mx-auto p-6 max-w-4xl">
 			<div className="mb-8">
-				<h1 className="text-3xl font-bold mb-4">Celebrity Directory</h1>
+				<h1 className="text-3xl font-bold mb-4">Cancelled or Not Directory</h1>
 				<div className="relative">
 					<SearchIcon className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
 					<Input
